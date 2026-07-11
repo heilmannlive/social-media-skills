@@ -8,6 +8,12 @@ const SESSION_DAYS = 30;
 export type SessionPayload = {
   userId: string;
   role: string; // PENDING | MEMBER | BOARD | ADMIN
+  /**
+   * Password version: digest of the password hash at sign-in time. Checked in
+   * getCurrentUser() so that changing the password invalidates every session
+   * issued before the change (stateless JWTs can't be revoked individually).
+   */
+  pwv: string;
 };
 
 function getSecret(): Uint8Array {
@@ -44,8 +50,14 @@ export async function getSessionPayload(): Promise<SessionPayload | null> {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, getSecret());
-    if (typeof payload.userId !== "string" || typeof payload.role !== "string") return null;
-    return { userId: payload.userId, role: payload.role };
+    if (
+      typeof payload.userId !== "string" ||
+      typeof payload.role !== "string" ||
+      typeof payload.pwv !== "string"
+    ) {
+      return null;
+    }
+    return { userId: payload.userId, role: payload.role, pwv: payload.pwv };
   } catch {
     return null;
   }

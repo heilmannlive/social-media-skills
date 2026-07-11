@@ -4,7 +4,8 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { hashPassword, requireUser, verifyPassword } from "@/lib/auth";
+import { hashPassword, passwordVersion, requireUser, verifyPassword } from "@/lib/auth";
+import { createSession } from "@/lib/session";
 
 // Turn an empty/whitespace-only string into null, trim otherwise.
 const optionalText = (max: number) =>
@@ -94,10 +95,15 @@ export async function changePassword(formData: FormData): Promise<void> {
     redirect("/account?error=password-wrong");
   }
 
+  const newHash = await hashPassword(parsed.data.newPassword);
   await db.user.update({
     where: { id: user.id },
-    data: { passwordHash: await hashPassword(parsed.data.newPassword) },
+    data: { passwordHash: newHash },
   });
+
+  // The pwv check in getCurrentUser invalidates every session issued before
+  // this change; re-issue this browser's session so the user stays signed in.
+  await createSession({ userId: user.id, role: user.role, pwv: passwordVersion(newHash) });
 
   redirect("/account?saved=password");
 }

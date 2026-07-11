@@ -1,4 +1,5 @@
 import "server-only";
+import { createHash } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { cache } from "react";
@@ -20,6 +21,14 @@ export function verifyPassword(password: string, hash: string): Promise<boolean>
 }
 
 /**
+ * Short digest of the stored password hash, embedded in session tokens (as
+ * `pwv`) so a password change invalidates all previously issued sessions.
+ */
+export function passwordVersion(passwordHash: string): string {
+  return createHash("sha256").update(passwordHash).digest("hex").slice(0, 16);
+}
+
+/**
  * Load the current user from the session cookie, re-checking the database so
  * that role/status changes take effect immediately (the JWT role is only a
  * hint for middleware). Returns null when logged out or the account is gone.
@@ -29,6 +38,8 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
   if (!payload) return null;
   const user = await db.user.findUnique({ where: { id: payload.userId } });
   if (!user || user.status === "SUSPENDED") return null;
+  // Sessions minted before the most recent password change are invalid.
+  if (payload.pwv !== passwordVersion(user.passwordHash)) return null;
   return user;
 });
 

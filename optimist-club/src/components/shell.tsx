@@ -61,7 +61,11 @@ export async function AppShell({ user, children }: { user: User; children: React
                 </span>
               ) : null}
             </Link>
-            <Link href="/account" className="flex items-center gap-2">
+            <Link
+              href="/account"
+              className="flex items-center gap-2"
+              aria-label={`Account — ${user.name}`}
+            >
               <Avatar name={user.name} size="sm" />
               <span className="hidden text-sm font-medium text-navy-900 sm:block">
                 {user.name}
@@ -120,11 +124,15 @@ export async function AppShell({ user, children }: { user: User; children: React
       {/* Mobile bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-20 border-t border-navy-100 bg-white md:hidden">
         <ul className="flex justify-around">
-          {NAV.slice(0, 5).map((item) => (
+          {[
+            ...NAV.slice(0, 4),
+            { href: "/account", label: "Account" },
+            ...(isAdmin ? [{ href: "/admin", label: "Admin" }] : []),
+          ].map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="block px-3 py-3 text-xs font-medium text-navy-700"
+                className="block px-2 py-3 text-[11px] font-medium text-navy-700"
               >
                 {item.label}
               </Link>

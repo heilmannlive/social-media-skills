@@ -4,17 +4,18 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { hashPassword, verifyPassword } from "@/lib/auth";
+import { hashPassword, passwordVersion, verifyPassword } from "@/lib/auth";
 import { createSession } from "@/lib/session";
 import { notifyMembers } from "@/lib/notifications";
 
 /**
  * Only allow same-origin relative paths as post-login destinations:
- * must start with exactly one "/" (a "//host" prefix would be treated as a
- * protocol-relative external URL by the browser).
+ * must start with exactly one "/" and contain no backslashes anywhere —
+ * browsers normalize "\" to "/" when parsing URLs, so "/\evil.com" (and
+ * friends) would become the protocol-relative external URL "//evil.com".
  */
 function safeNextPath(next: string): string {
-  if (next.startsWith("/") && !next.startsWith("//")) return next;
+  if (/^\/(?![/\\])/.test(next) && !next.includes("\\")) return next;
   return "/dashboard";
 }
 
@@ -51,7 +52,11 @@ export async function login(formData: FormData): Promise<void> {
 
   if (user.status === "SUSPENDED") loginFail("suspended", next);
 
-  await createSession({ userId: user.id, role: user.role });
+  await createSession({
+    userId: user.id,
+    role: user.role,
+    pwv: passwordVersion(user.passwordHash),
+  });
   redirect(safeNextPath(next));
 }
 
@@ -71,6 +76,8 @@ const applySchema = z.object({
   inviteCode: z
     .string()
     .trim()
+    // Codes are stored uppercase (see admin/invites); accept any casing here.
+    .toUpperCase()
     .max(120)
     .optional()
     .transform((v) => v || undefined),
@@ -174,7 +181,7 @@ export async function apply(formData: FormData): Promise<void> {
       throw err;
     }
 
-    await createSession({ userId, role: invite.role });
+    await createSession({ userId, role: invite.role, pwv: passwordVersion(passwordHash) });
     redirect("/dashboard");
   }
 
@@ -196,9 +203,10 @@ export async function apply(formData: FormData): Promise<void> {
       body: `${data.name} — ${data.organization}`,
       href: "/admin/members",
     },
-    { minRole: "ADMIN" }
+    // Board members review applications, so they get the notification too.
+    { minRole: "BOARD" }
   );
 
-  await createSession({ userId, role: "PENDING" });
+  await createSession({ userId, role: "PENDING", pwv: passwordVersion(passwordHash) });
   redirect("/pending");
 }

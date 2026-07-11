@@ -18,7 +18,7 @@ async function main() {
 
   const admin = await db.user.upsert({
     where: { email: "admin@optimists-club.com" },
-    update: {},
+    update: { role: "ADMIN", status: "ACTIVE", passwordHash },
     create: {
       email: "admin@optimists-club.com",
       passwordHash,
@@ -37,7 +37,7 @@ async function main() {
 
   const board = await db.user.upsert({
     where: { email: "board@optimists-club.com" },
-    update: {},
+    update: { role: "BOARD", status: "ACTIVE", passwordHash },
     create: {
       email: "board@optimists-club.com",
       passwordHash,
@@ -56,7 +56,7 @@ async function main() {
 
   const member = await db.user.upsert({
     where: { email: "member@optimists-club.com" },
-    update: {},
+    update: { role: "MEMBER", status: "ACTIVE", passwordHash },
     create: {
       email: "member@optimists-club.com",
       passwordHash,
@@ -75,7 +75,7 @@ async function main() {
 
   await db.user.upsert({
     where: { email: "applicant@optimists-club.com" },
-    update: {},
+    update: { role: "PENDING", status: "PENDING", passwordHash },
     create: {
       email: "applicant@optimists-club.com",
       passwordHash,
@@ -105,33 +105,45 @@ async function main() {
   const inTwoWeeks = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
   const inFiveWeeks = new Date(Date.now() + 35 * 24 * 60 * 60 * 1000);
 
-  const salon = await db.event.create({
-    data: {
-      title: "Berlin Salon: Europe's Energy Renaissance",
-      description:
-        "An evening with founders and policymakers on how Europe can build abundant, clean, and sovereign energy. Off the record, on the future. Dinner follows the discussion.",
-      location: "Soho House Berlin, Torstraße 1",
-      city: "Berlin",
-      startsAt: inTwoWeeks,
-      capacity: 40,
-      isPublished: true,
-      createdById: admin.id,
-    },
-  });
+  // Events and the welcome announcement are looked up by title so re-running
+  // the seed never duplicates them.
+  const salon =
+    (await db.event.findFirst({
+      where: { title: "Berlin Salon: Europe's Energy Renaissance" },
+    })) ??
+    (await db.event.create({
+      data: {
+        title: "Berlin Salon: Europe's Energy Renaissance",
+        description:
+          "An evening with founders and policymakers on how Europe can build abundant, clean, and sovereign energy. Off the record, on the future. Dinner follows the discussion.",
+        location: "Soho House Berlin, Torstraße 1",
+        city: "Berlin",
+        startsAt: inTwoWeeks,
+        capacity: 40,
+        isPublished: true,
+        createdById: admin.id,
+      },
+    }));
 
-  await db.event.create({
-    data: {
-      title: "Munich Roundtable: Building in Europe, Staying in Europe",
-      description:
-        "A working session with founders who chose to scale from Europe. What worked, what has to change, and what we do about it.",
-      location: "Literaturhaus München, Salvatorplatz 1",
-      city: "Munich",
-      startsAt: inFiveWeeks,
-      capacity: 25,
-      isPublished: true,
-      createdById: board.id,
-    },
-  });
+  if (
+    !(await db.event.findFirst({
+      where: { title: "Munich Roundtable: Building in Europe, Staying in Europe" },
+    }))
+  ) {
+    await db.event.create({
+      data: {
+        title: "Munich Roundtable: Building in Europe, Staying in Europe",
+        description:
+          "A working session with founders who chose to scale from Europe. What worked, what has to change, and what we do about it.",
+        location: "Literaturhaus München, Salvatorplatz 1",
+        city: "Munich",
+        startsAt: inFiveWeeks,
+        capacity: 25,
+        isPublished: true,
+        createdById: board.id,
+      },
+    });
+  }
 
   await db.rsvp.upsert({
     where: { userId_eventId: { userId: member.id, eventId: salon.id } },
@@ -139,15 +151,19 @@ async function main() {
     create: { userId: member.id, eventId: salon.id, status: "GOING" },
   });
 
-  await db.announcement.create({
-    data: {
-      title: "Welcome to the member area",
-      body: "This is the digital home of The Optimist Club. Find upcoming salons under Events, meet fellow members in the directory, and keep your profile current — it is how members find each other. Berlin salon RSVPs close Friday.",
-      audience: "ALL",
-      pinned: true,
-      authorId: admin.id,
-    },
-  });
+  if (
+    !(await db.announcement.findFirst({ where: { title: "Welcome to the member area" } }))
+  ) {
+    await db.announcement.create({
+      data: {
+        title: "Welcome to the member area",
+        body: "This is the digital home of The Optimist Club. Find upcoming salons under Events, meet fellow members in the directory, and keep your profile current — it is how members find each other. Berlin salon RSVPs close Friday.",
+        audience: "ALL",
+        pinned: true,
+        authorId: admin.id,
+      },
+    });
+  }
 
   await db.payment.upsert({
     where: { userId_periodYear: { userId: member.id, periodYear: year } },

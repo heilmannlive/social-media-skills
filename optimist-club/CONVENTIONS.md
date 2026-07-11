@@ -14,7 +14,7 @@ Stack: Next.js 15 App Router, React 19, TypeScript strict, Tailwind CSS v4, Pris
 ## Layouts & auth
 - Member-area pages live under `src/app/(member)/` with a shared layout `src/app/(member)/layout.tsx` (owned by Module E) that calls `requireUser()` and wraps children in `<AppShell user={user}>`.
   - IMPORTANT (all member modules): pages under `(member)` can assume the shell exists. Each page still calls `requireUser()` (or `requireRole`) itself to get the user — it's cached per request via React `cache()`.
-  - PENDING/not-ACTIVE users: member pages must call `requireRole("MEMBER")` which redirects them to `/pending`.
+  - PENDING/not-ACTIVE users: member pages must call `requireRole("MEMBER")` which redirects them to `/pending`. Intentional exceptions: `/account` and `/notifications` (and their actions) use `requireUser()` only, so PENDING applicants can maintain their application profile and receive status notifications — these operate strictly on the caller's own records.
 - Admin pages live under `src/app/admin/` with layout `src/app/admin/layout.tsx` (owned by Module B) calling `requireRole("BOARD")` and wrapping in `<AppShell>`. Destructive/admin-only mutations must check `requireRole("ADMIN")` where noted.
 - Public pages under `src/app/(public)/` with their own light layout (Module F owns it).
 

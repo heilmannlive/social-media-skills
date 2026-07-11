@@ -7,7 +7,7 @@
 //
 // Bump CACHE_VERSION when the caching logic changes so old caches are purged.
 
-const CACHE_VERSION = "oc-v1";
+const CACHE_VERSION = "oc-v2";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -72,12 +72,16 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Network-first with cache fallback for page navigations, so the app
-  // still opens (with the last-seen page) when briefly offline.
+  // still opens when briefly offline. Only PUBLIC pages are ever written to
+  // the cache: member/admin pages contain private data and must not survive
+  // logout on a shared device (Cache Storage outlives the session cookie).
+  const PUBLIC_PATHS = ["/", "/login", "/join"];
   if (request.mode === "navigate") {
+    const cacheable = PUBLIC_PATHS.includes(url.pathname);
     event.respondWith(
       fetch(request)
         .then((response) => {
-          if (response.ok) {
+          if (response.ok && cacheable) {
             const copy = response.clone();
             caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
           }

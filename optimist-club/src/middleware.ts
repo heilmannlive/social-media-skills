@@ -6,9 +6,12 @@ import { jwtVerify } from "jose";
 
 const COOKIE_NAME = "oc_session";
 
-function getSecret(): Uint8Array {
+function getSecret(): Uint8Array | null {
   const secret = process.env.AUTH_SECRET;
   if (!secret || secret === "change-me-to-a-long-random-string") {
+    // Fail closed in production: with no real secret, no token is trusted.
+    // (session.ts throws in the same situation, so pages fail closed too.)
+    if (process.env.NODE_ENV === "production") return null;
     return new TextEncoder().encode("optimist-club-dev-secret-do-not-use-in-prod");
   }
   return new TextEncoder().encode(secret);
@@ -34,9 +37,10 @@ export async function middleware(req: NextRequest) {
   if (!isProtected) return NextResponse.next();
 
   const token = req.cookies.get(COOKIE_NAME)?.value;
-  if (token) {
+  const secret = getSecret();
+  if (token && secret) {
     try {
-      await jwtVerify(token, getSecret());
+      await jwtVerify(token, secret);
       return NextResponse.next();
     } catch {
       // fall through to redirect

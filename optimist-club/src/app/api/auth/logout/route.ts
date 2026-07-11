@@ -1,17 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { destroySession } from "@/lib/session";
 
-async function logout(req: NextRequest): Promise<NextResponse> {
+// POST-only: a GET handler would let any third-party page (or an <img> tag)
+// log members out drive-by, since GET navigations send the lax cookie.
+export async function POST(req: NextRequest) {
   await destroySession();
-  // 303 so the browser follows with a GET regardless of the original method.
+  // 303 so the browser follows the redirect with a GET.
   return NextResponse.redirect(new URL("/", req.url), 303);
 }
 
-export async function POST(req: NextRequest) {
-  return logout(req);
-}
-
-// Defensive: also allow GET (e.g. a manually typed URL) with the same behavior.
 export async function GET(req: NextRequest) {
-  return logout(req);
+  // Don't destroy the session on GET; just send the visitor home.
+  return NextResponse.redirect(new URL("/", req.url), 303);
 }
