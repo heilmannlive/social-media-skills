@@ -11,7 +11,13 @@ type RsvpWithUser = {
   id: string;
   userId: string;
   createdAt: Date;
-  user: { id: string; name: string; title: string | null; organization: string | null };
+  user: {
+    id: string;
+    name: string;
+    title: string | null;
+    organization: string | null;
+    status: string;
+  };
 };
 
 function RsvpGroup({
@@ -46,12 +52,22 @@ function RsvpGroup({
               ) : null}
               <Avatar name={r.user.name} size="sm" />
               <div className="min-w-0 flex-1">
-                <Link
-                  href={`/members/${r.user.id}`}
-                  className="block truncate text-sm font-semibold text-navy-900 underline-offset-2 hover:underline"
-                >
-                  {r.user.name}
-                </Link>
+                {/* Profile pages only exist for ACTIVE members. */}
+                {r.user.status === "ACTIVE" ? (
+                  <Link
+                    href={`/members/${r.user.id}`}
+                    className="block truncate text-sm font-semibold text-navy-900 underline-offset-2 hover:underline"
+                  >
+                    {r.user.name}
+                  </Link>
+                ) : (
+                  <span className="block truncate text-sm font-semibold text-navy-900">
+                    {r.user.name}
+                    <span className="ml-2 text-xs font-normal text-navy-400">
+                      ({r.user.status.toLowerCase()})
+                    </span>
+                  </span>
+                )}
                 {r.user.title || r.user.organization ? (
                   <p className="truncate text-xs text-navy-500">
                     {[r.user.title, r.user.organization].filter(Boolean).join(", ")}
@@ -82,7 +98,9 @@ export default async function AdminEventRsvpsPage({
     include: {
       rsvps: {
         include: {
-          user: { select: { id: true, name: true, title: true, organization: true } },
+          user: {
+            select: { id: true, name: true, title: true, organization: true, status: true },
+          },
         },
         orderBy: { createdAt: "asc" },
       },

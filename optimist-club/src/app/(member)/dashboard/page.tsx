@@ -66,7 +66,9 @@ export default async function DashboardPage() {
   const maxim = MAXIMS[dayOfYear(now) % MAXIMS.length];
   const myRsvp = nextEvent?.rsvps[0]?.status ?? null;
   const duesPaid = duesPayment?.status === "PAID";
+  // FAILED (e.g. abandoned card checkout) renders like unpaid: payable again.
   const duesPending = duesPayment?.status === "PENDING";
+  const duesPendingTransfer = duesPending && duesPayment?.method === "TRANSFER";
 
   return (
     <div>
@@ -167,10 +169,22 @@ export default async function DashboardPage() {
                 <p className="font-semibold text-navy-900">Dues for {year}</p>
                 <Badge tone="gold">Pending</Badge>
               </div>
-              <p className="mt-2 text-sm text-navy-600">
-                We are confirming your transfer — no action needed. We&rsquo;ll notify you as soon
-                as it clears.
-              </p>
+              {duesPendingTransfer ? (
+                <p className="mt-2 text-sm text-navy-600">
+                  We are confirming your transfer — no action needed. We&rsquo;ll notify you as
+                  soon as it clears.
+                </p>
+              ) : (
+                <>
+                  <p className="mt-2 text-sm text-navy-600">
+                    A card payment is in progress. If you didn&rsquo;t complete checkout, you
+                    can pick it back up on the membership page.
+                  </p>
+                  <ButtonLink href="/membership" variant="outline" className="mt-4 w-full">
+                    Go to membership
+                  </ButtonLink>
+                </>
+              )}
             </Card>
           ) : (
             <Card className="border-navy-200">

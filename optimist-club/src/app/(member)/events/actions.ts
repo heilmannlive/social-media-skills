@@ -42,14 +42,24 @@ export async function attendEvent(formData: FormData): Promise<void> {
     let status: "GOING" | "WAITLIST" = "GOING";
     if (event.capacity !== null) {
       const going = await tx.rsvp.count({ where: { eventId, status: "GOING" } });
-      if (going >= event.capacity) status = "WAITLIST";
+      // Others already waiting keep priority: a newcomer joins behind the
+      // queue even when a seat is technically free (promotion stays fair).
+      const waiting = await tx.rsvp.count({
+        where: { eventId, status: "WAITLIST", userId: { not: user.id } },
+      });
+      if (going >= event.capacity || waiting > 0) status = "WAITLIST";
+    }
+
+    // Already waitlisted and still no seat: keep the existing queue position.
+    if (existing?.status === "WAITLIST" && status === "WAITLIST") {
+      return "unchanged" as const;
     }
 
     if (existing) {
       await tx.rsvp.update({
         where: { id: existing.id },
-        // Joining the waitlist starts a fresh queue position, even for a
-        // member who previously declined.
+        // Joining the waitlist from DECLINED (or fresh) starts a new queue
+        // position; an existing waitlist position is preserved above.
         data: { status, ...(status === "WAITLIST" ? { createdAt: new Date() } : {}) },
       });
     } else {
@@ -92,13 +102,18 @@ export async function declineEvent(formData: FormData): Promise<void> {
       await tx.rsvp.create({ data: { userId: user.id, eventId, status: "DECLINED" } });
     }
 
-    // A confirmed spot just opened at a capacity-limited event: promote the
-    // member who has been waiting the longest.
+    // A confirmed spot may have opened at a capacity-limited event: promote
+    // the longest-waiting member, but only if a seat is genuinely free (the
+    // event can be over capacity after an admin lowered the limit).
     if (wasGoing && event.capacity !== null) {
-      const next = await tx.rsvp.findFirst({
-        where: { eventId, status: "WAITLIST" },
-        orderBy: { createdAt: "asc" },
-      });
+      const going = await tx.rsvp.count({ where: { eventId, status: "GOING" } });
+      const next =
+        going < event.capacity
+          ? await tx.rsvp.findFirst({
+              where: { eventId, status: "WAITLIST" },
+              orderBy: { createdAt: "asc" },
+            })
+          : null;
       if (next) {
         await tx.rsvp.update({ where: { id: next.id }, data: { status: "GOING" } });
         return {

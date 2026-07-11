@@ -24,28 +24,35 @@ export async function POST(): Promise<NextResponse> {
 
   const year = new Date().getFullYear();
 
-  const existing = await db.payment.findUnique({
-    where: { userId_periodYear: { userId: user.id, periodYear: year } },
+  // Guard and write atomically so a concurrent webhook can never be
+  // downgraded: if the payment is already PAID we leave it untouched.
+  const alreadyPaid = await db.$transaction(async (tx) => {
+    const existing = await tx.payment.findUnique({
+      where: { userId_periodYear: { userId: user.id, periodYear: year } },
+    });
+    if (existing?.status === "PAID") {
+      return true;
+    }
+    await tx.payment.upsert({
+      where: { userId_periodYear: { userId: user.id, periodYear: year } },
+      create: {
+        userId: user.id,
+        periodYear: year,
+        amountCents: MEMBERSHIP_FEE.amountCents,
+        currency: MEMBERSHIP_FEE.currency,
+        status: "PENDING",
+        method: "STRIPE",
+      },
+      update: {
+        status: "PENDING",
+        method: "STRIPE",
+      },
+    });
+    return false;
   });
-  if (existing?.status === "PAID") {
+  if (alreadyPaid) {
     return NextResponse.redirect(`${appUrl}/membership`, 303);
   }
-
-  await db.payment.upsert({
-    where: { userId_periodYear: { userId: user.id, periodYear: year } },
-    create: {
-      userId: user.id,
-      periodYear: year,
-      amountCents: MEMBERSHIP_FEE.amountCents,
-      currency: MEMBERSHIP_FEE.currency,
-      status: "PENDING",
-      method: "STRIPE",
-    },
-    update: {
-      status: "PENDING",
-      method: "STRIPE",
-    },
-  });
 
   try {
     const session = await getStripe().checkout.sessions.create({
@@ -68,8 +75,8 @@ export async function POST(): Promise<NextResponse> {
       client_reference_id: user.id,
     });
 
-    await db.payment.update({
-      where: { userId_periodYear: { userId: user.id, periodYear: year } },
+    await db.payment.updateMany({
+      where: { userId: user.id, periodYear: year, status: { not: "PAID" } },
       data: { stripeSessionId: session.id },
     });
 

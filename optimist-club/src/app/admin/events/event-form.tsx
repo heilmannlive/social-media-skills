@@ -9,19 +9,30 @@ export function toDateTimeLocalValue(d: Date): string {
   )}:${pad(d.getMinutes())}`;
 }
 
+/** Values echoed back through query params after a failed validation. */
+export type EventFormEcho = Partial<
+  Record<
+    "title" | "description" | "location" | "city" | "startsAt" | "endsAt" | "capacity" | "isPublished",
+    string
+  >
+>;
+
 /**
  * Shared create/edit event form (server component). Pass the server action and,
- * when editing, the existing event for default values.
+ * when editing, the existing event for default values. `echo` (from the
+ * validation-failure redirect) takes precedence so drafts survive errors.
  */
 export function EventForm({
   action,
   event,
   error,
+  echo = {},
   submitLabel,
 }: {
   action: (formData: FormData) => Promise<void>;
   event?: Event;
   error?: string;
+  echo?: EventFormEcho;
   submitLabel: string;
 }) {
   return (
@@ -43,8 +54,9 @@ export function EventForm({
             id="title"
             name="title"
             required
+            minLength={3}
             maxLength={200}
-            defaultValue={event?.title}
+            defaultValue={echo.title ?? event?.title}
             placeholder="Founders' Dinner: The Long View"
           />
         </Field>
@@ -58,9 +70,10 @@ export function EventForm({
             id="description"
             name="description"
             required
+            minLength={10}
             rows={8}
             maxLength={10000}
-            defaultValue={event?.description}
+            defaultValue={echo.description ?? event?.description}
             placeholder="An evening for members building for the decade ahead…"
           />
         </Field>
@@ -71,8 +84,9 @@ export function EventForm({
               id="location"
               name="location"
               required
+              minLength={2}
               maxLength={300}
-              defaultValue={event?.location}
+              defaultValue={echo.location ?? event?.location}
               placeholder="Hotel Adlon, Unter den Linden 77"
             />
           </Field>
@@ -81,7 +95,7 @@ export function EventForm({
               id="city"
               name="city"
               maxLength={120}
-              defaultValue={event?.city ?? ""}
+              defaultValue={echo.city ?? event?.city ?? ""}
               placeholder="Berlin"
             />
           </Field>
@@ -94,7 +108,7 @@ export function EventForm({
               name="startsAt"
               type="datetime-local"
               required
-              defaultValue={event ? toDateTimeLocalValue(event.startsAt) : ""}
+              defaultValue={echo.startsAt ?? (event ? toDateTimeLocalValue(event.startsAt) : "")}
             />
           </Field>
           <Field label="Ends" htmlFor="endsAt" hint="Optional.">
@@ -102,7 +116,7 @@ export function EventForm({
               id="endsAt"
               name="endsAt"
               type="datetime-local"
-              defaultValue={event?.endsAt ? toDateTimeLocalValue(event.endsAt) : ""}
+              defaultValue={echo.endsAt ?? (event?.endsAt ? toDateTimeLocalValue(event.endsAt) : "")}
             />
           </Field>
         </div>
@@ -119,7 +133,7 @@ export function EventForm({
             min={1}
             max={100000}
             step={1}
-            defaultValue={event?.capacity ?? ""}
+            defaultValue={echo.capacity ?? event?.capacity ?? ""}
             placeholder="Leave blank for unlimited"
             className="max-w-48"
           />
@@ -129,7 +143,7 @@ export function EventForm({
           <input
             type="checkbox"
             name="isPublished"
-            defaultChecked={event?.isPublished ?? false}
+            defaultChecked={echo.isPublished === "on" || (event?.isPublished ?? false)}
             className="mt-0.5 h-4 w-4 accent-navy-900"
           />
           <span>

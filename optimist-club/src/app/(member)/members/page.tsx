@@ -36,6 +36,9 @@ export default async function MembersPage({
       role: { in: ["MEMBER", "BOARD", "ADMIN"] },
       ...(query
         ? {
+            // NOTE: on SQLite `contains` is case-insensitive for ASCII. When
+            // switching to Postgres, add `mode: "insensitive"` to each filter
+            // (see docs/DEPLOYMENT.md) or the search becomes case-sensitive.
             OR: [
               { name: { contains: query } },
               { organization: { contains: query } },

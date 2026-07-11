@@ -125,6 +125,8 @@ export default async function AccountPage({
               id="linkedinUrl"
               name="linkedinUrl"
               type="url"
+              pattern="https://([\w-]+\.)*linkedin\.com/.*"
+              title="A LinkedIn URL, e.g. https://www.linkedin.com/in/your-name"
               maxLength={300}
               defaultValue={user.linkedinUrl ?? ""}
             />

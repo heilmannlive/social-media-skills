@@ -37,6 +37,15 @@ export async function POST(req: Request): Promise<NextResponse> {
     if (userId && Number.isInteger(periodYear)) {
       const user = await db.user.findUnique({ where: { id: userId } });
       if (user) {
+        // Idempotency: Stripe redelivers events. If the payment is already
+        // PAID, keep the original paidAt and do not notify again.
+        const existing = await db.payment.findUnique({
+          where: { userId_periodYear: { userId, periodYear } },
+        });
+        if (existing?.status === "PAID") {
+          return NextResponse.json({ received: true });
+        }
+
         await db.payment.upsert({
           where: { userId_periodYear: { userId, periodYear } },
           create: {
@@ -70,6 +79,27 @@ export async function POST(req: Request): Promise<NextResponse> {
       }
     } else {
       console.error(`Stripe webhook: missing metadata on session ${session.id}`);
+    }
+  }
+
+  if (event.type === "checkout.session.expired") {
+    const session = event.data.object as Stripe.Checkout.Session;
+    const userId = session.metadata?.userId;
+    const periodYear = Number(session.metadata?.periodYear);
+
+    // The member abandoned checkout. Mark the still-pending Stripe payment
+    // FAILED so it becomes payable again — never touch a PAID row.
+    const match =
+      userId && Number.isInteger(periodYear)
+        ? { userId, periodYear }
+        : { stripeSessionId: session.id };
+    const { count } = await db.payment.updateMany({
+      where: { ...match, status: "PENDING", method: "STRIPE" },
+      data: { status: "FAILED" },
+    });
+    if (count > 0) {
+      revalidatePath("/membership");
+      revalidatePath("/admin/payments");
     }
   }
 

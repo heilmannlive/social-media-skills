@@ -49,6 +49,7 @@ export default async function EditAnnouncementPage({
       />
 
       {canDelete ? (
+        <div id="delete">
         <Card className="mt-6 border-red-200">
           <h2 className="font-display text-lg text-red-800">Delete this announcement</h2>
           <p className="mt-1 text-sm text-navy-600">
@@ -67,6 +68,7 @@ export default async function EditAnnouncementPage({
             </form>
           </details>
         </Card>
+        </div>
       ) : null}
     </div>
   );

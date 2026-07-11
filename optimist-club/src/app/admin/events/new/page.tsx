@@ -2,17 +2,17 @@ import Link from "next/link";
 import { requireRole } from "@/lib/auth";
 import { PageHeader } from "@/components/ui";
 import { createEvent } from "../actions";
-import { EventForm } from "../event-form";
+import { EventForm, type EventFormEcho } from "../event-form";
 
 export const metadata = { title: "New event — Admin — The Optimist Club" };
 
 export default async function NewEventPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string } & EventFormEcho>;
 }) {
   await requireRole("BOARD");
-  const { error } = await searchParams;
+  const { error, ...echo } = await searchParams;
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -28,7 +28,7 @@ export default async function NewEventPage({
           subtitle="Draft it quietly or publish right away — publishing notifies every active member."
         />
       </div>
-      <EventForm action={createEvent} error={error} submitLabel="Create event" />
+      <EventForm action={createEvent} error={error} echo={echo} submitLabel="Create event" />
     </div>
   );
 }

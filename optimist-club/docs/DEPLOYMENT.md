@@ -57,6 +57,7 @@ SQLite is for development only. The schema uses string enums deliberately, so no
    ```
 
 4. (Optional) Seed initial data with `npm run db:seed`, then immediately change or remove the seed accounts — they use a published password.
+5. Make the member-directory search case-insensitive: unlike SQLite, Postgres `contains` is case-sensitive. In `src/app/(member)/members/page.tsx`, add `mode: "insensitive"` to each `contains` filter, e.g. `{ name: { contains: query, mode: "insensitive" } }` (there is a NOTE comment at the exact spot).
 
 ## 3. Environment variables
 

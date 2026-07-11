@@ -21,7 +21,9 @@ export default async function EventDetailPage({
     include: {
       rsvps: {
         include: {
-          user: { select: { id: true, name: true, title: true, organization: true } },
+          user: {
+            select: { id: true, name: true, title: true, organization: true, status: true },
+          },
         },
         orderBy: { createdAt: "asc" },
       },
@@ -97,7 +99,9 @@ export default async function EventDetailPage({
             </p>
           )}
           <div className="mt-4 flex flex-wrap gap-3">
-            {mine?.status !== "GOING" ? (
+            {/* Already-waitlisted members keep their position; no re-join
+                button while the event is still full. */}
+            {mine?.status !== "GOING" && !(mine?.status === "WAITLIST" && isFull) ? (
               <form action={attendEvent}>
                 <input type="hidden" name="eventId" value={event.id} />
                 <Button type="submit" variant="gold">
@@ -166,12 +170,9 @@ export default async function EventDetailPage({
           </p>
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2">
-            {going.map((r) => (
-              <li key={r.id}>
-                <Link
-                  href={`/members/${r.user.id}`}
-                  className="flex items-center gap-3 rounded-lg p-2 -m-2 hover:bg-navy-50"
-                >
+            {going.map((r) => {
+              const person = (
+                <>
                   <Avatar name={r.user.name} size="sm" />
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-semibold text-navy-900">
@@ -184,9 +185,25 @@ export default async function EventDetailPage({
                       </span>
                     ) : null}
                   </span>
-                </Link>
-              </li>
-            ))}
+                </>
+              );
+              // Profile pages only exist for ACTIVE members; render others
+              // (e.g. since-suspended attendees) without a dead link.
+              return (
+                <li key={r.id}>
+                  {r.user.status === "ACTIVE" ? (
+                    <Link
+                      href={`/members/${r.user.id}`}
+                      className="flex items-center gap-3 rounded-lg p-2 -m-2 hover:bg-navy-50"
+                    >
+                      {person}
+                    </Link>
+                  ) : (
+                    <span className="flex items-center gap-3 p-2 -m-2">{person}</span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         )}
       </Card>

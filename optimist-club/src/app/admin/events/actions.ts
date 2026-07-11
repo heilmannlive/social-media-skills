@@ -6,7 +6,7 @@ import { z } from "zod";
 import { requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatDateTime } from "@/lib/format";
-import { notifyMembers } from "@/lib/notifications";
+import { notifyMembers, notifyUser } from "@/lib/notifications";
 
 const idSchema = z.string().min(1).max(64);
 
@@ -65,6 +65,56 @@ function firstError(error: z.ZodError): string {
   return error.issues[0]?.message ?? "Please check the form and try again.";
 }
 
+/** Echoed back into the form after a validation redirect so drafts survive. */
+const ECHO_FIELDS = [
+  "title",
+  "description",
+  "location",
+  "city",
+  "startsAt",
+  "endsAt",
+  "capacity",
+] as const;
+
+function eventFormFail(basePath: string, error: string, formData: FormData): never {
+  const params = new URLSearchParams({ error });
+  for (const key of ECHO_FIELDS) {
+    const value = formData.get(key);
+    if (typeof value === "string" && value) params.set(key, value.slice(0, 10000));
+  }
+  if (formData.get("isPublished") === "on") params.set("isPublished", "on");
+  redirect(`${basePath}?${params.toString()}`);
+}
+
+/**
+ * Fill newly freed seats from the waitlist (oldest first) and return the
+ * promoted user ids. Runs after capacity edits; a lowered capacity simply
+ * promotes no one.
+ */
+async function promoteFromWaitlist(eventId: string): Promise<string[]> {
+  return db.$transaction(async (tx) => {
+    const event = await tx.event.findUnique({ where: { id: eventId } });
+    if (!event) return [];
+    let free = Number.POSITIVE_INFINITY;
+    if (event.capacity !== null) {
+      const going = await tx.rsvp.count({ where: { eventId, status: "GOING" } });
+      free = event.capacity - going;
+    }
+    if (free <= 0) return [];
+    const next = await tx.rsvp.findMany({
+      where: { eventId, status: "WAITLIST" },
+      orderBy: { createdAt: "asc" },
+      ...(Number.isFinite(free) ? { take: free } : {}),
+    });
+    if (next.length === 0) return [];
+    await tx.rsvp.updateMany({
+      where: { id: { in: next.map((r) => r.id) } },
+      data: { status: "GOING" },
+    });
+    return next.map((r) => r.userId);
+  });
+}
+
 function refreshEventViews(eventId?: string): void {
   revalidatePath("/admin/events");
   revalidatePath("/events");
@@ -93,7 +143,7 @@ export async function createEvent(formData: FormData): Promise<void> {
   const actor = await requireRole("BOARD");
   const parsed = readEventForm(formData);
   if (!parsed.success) {
-    redirect(`/admin/events/new?error=${encodeURIComponent(firstError(parsed.error))}`);
+    eventFormFail("/admin/events/new", firstError(parsed.error), formData);
   }
 
   const data = parsed.data;
@@ -126,9 +176,7 @@ export async function updateEvent(formData: FormData): Promise<void> {
 
   const parsed = readEventForm(formData);
   if (!parsed.success) {
-    redirect(
-      `/admin/events/${eventId}/edit?error=${encodeURIComponent(firstError(parsed.error))}`
-    );
+    eventFormFail(`/admin/events/${eventId}/edit`, firstError(parsed.error), formData);
   }
 
   const existing = await db.event.findUnique({ where: { id: eventId } });
@@ -151,6 +199,23 @@ export async function updateEvent(formData: FormData): Promise<void> {
 
   // Notify the club only on the first transition from draft to published.
   if (!existing.isPublished && event.isPublished) await announceEvent(event, actor.id);
+
+  // A raised (or removed) capacity frees seats: waitlisted members are
+  // promoted in queue order, exactly as when a confirmed member declines.
+  const capacityLoosened =
+    event.capacity === null
+      ? existing.capacity !== null
+      : existing.capacity !== null && event.capacity > existing.capacity;
+  if (capacityLoosened) {
+    const promoted = await promoteFromWaitlist(event.id);
+    for (const userId of promoted) {
+      await notifyUser(userId, {
+        title: "A spot opened up — you are in",
+        body: `You have been moved off the waitlist for “${event.title}”. Your spot is confirmed.`,
+        href: `/events/${event.id}`,
+      });
+    }
+  }
 
   refreshEventViews(event.id);
   redirect("/admin/events");

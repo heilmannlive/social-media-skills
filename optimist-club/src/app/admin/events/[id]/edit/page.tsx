@@ -4,7 +4,7 @@ import { hasRole, requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Button, ButtonLink, Card, PageHeader } from "@/components/ui";
 import { deleteEvent, updateEvent } from "../../actions";
-import { EventForm } from "../../event-form";
+import { EventForm, type EventFormEcho } from "../../event-form";
 
 export const metadata = { title: "Edit event — Admin — The Optimist Club" };
 
@@ -13,10 +13,10 @@ export default async function EditEventPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string } & EventFormEcho>;
 }) {
   const user = await requireRole("BOARD");
-  const [{ id }, { error }] = await Promise.all([params, searchParams]);
+  const [{ id }, { error, ...echo }] = await Promise.all([params, searchParams]);
 
   const event = await db.event.findUnique({ where: { id } });
   if (!event) notFound();
@@ -43,7 +43,7 @@ export default async function EditEventPage({
         />
       </div>
 
-      <EventForm action={updateEvent} event={event} error={error} submitLabel="Save changes" />
+      <EventForm action={updateEvent} event={event} error={error} echo={echo} submitLabel="Save changes" />
 
       {canDelete ? (
         <Card className="mt-6 border-red-200">

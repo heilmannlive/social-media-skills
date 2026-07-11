@@ -32,6 +32,7 @@ export function AnnouncementForm({
           <Input
             id="title"
             name="title"
+            minLength={3}
             required
             maxLength={200}
             defaultValue={announcement?.title}
@@ -43,6 +44,7 @@ export function AnnouncementForm({
           <Textarea
             id="body"
             name="body"
+            minLength={10}
             required
             rows={8}
             maxLength={20000}

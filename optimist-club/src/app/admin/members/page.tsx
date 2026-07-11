@@ -105,6 +105,56 @@ function RowActions({ user, actorIsAdmin, actorId }: { user: User; actorIsAdmin:
   );
 }
 
+/**
+ * Pending applications get a full card so the board can review what the
+ * applicant actually submitted before approving or declining.
+ */
+function ApplicationCards({ users }: { users: User[] }) {
+  return (
+    <div className="space-y-3">
+      {users.map((u) => (
+        <div key={u.id} className="rounded-lg border border-navy-100 bg-white p-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <Avatar name={u.name} size="md" />
+              <div>
+                <p className="font-semibold text-navy-950">{u.name}</p>
+                <p className="text-xs text-navy-500">
+                  {[u.title, u.organization].filter(Boolean).join(" · ") || "—"}
+                </p>
+                <p className="text-xs text-navy-400">
+                  {[u.city, u.country].filter(Boolean).join(", ")}
+                  {u.city || u.country ? " · " : ""}
+                  {u.email} · applied {timeAgo(u.createdAt)}
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <form action={approveApplication}>
+                <input type="hidden" name="userId" value={u.id} />
+                <Button type="submit" variant="gold" className="px-3 py-1.5 text-xs">
+                  Approve
+                </Button>
+              </form>
+              <form action={declineApplication}>
+                <input type="hidden" name="userId" value={u.id} />
+                <Button type="submit" variant="outline" className="px-3 py-1.5 text-xs">
+                  Decline
+                </Button>
+              </form>
+            </div>
+          </div>
+          {u.bio ? (
+            <blockquote className="mt-3 border-l-2 border-gold-400 pl-3 text-sm leading-relaxed text-navy-700 whitespace-pre-wrap">
+              {u.bio}
+            </blockquote>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function MembersTable({
   users,
   actorIsAdmin,
@@ -236,7 +286,7 @@ export default async function AdminMembersPage({
             <h2 className="mb-3 font-display text-lg text-navy-950">
               Pending applications ({pending.length})
             </h2>
-            <MembersTable users={pending} actorIsAdmin={actorIsAdmin} actorId={actor.id} />
+            <ApplicationCards users={pending} />
           </div>
         </div>
       ) : null}
@@ -261,7 +311,11 @@ export default async function AdminMembersPage({
           }
         />
       ) : rest.length > 0 ? (
-        <MembersTable users={rest} actorIsAdmin={actorIsAdmin} actorId={actor.id} />
+        filter === "PENDING" ? (
+          <ApplicationCards users={rest} />
+        ) : (
+          <MembersTable users={rest} actorIsAdmin={actorIsAdmin} actorId={actor.id} />
+        )
       ) : null}
 
       {!actorIsAdmin ? (

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { hasRole, requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatDate } from "@/lib/format";
-import { Badge, Button, Card, EmptyState, PageHeader } from "@/components/ui";
-import { createAnnouncement, deleteAnnouncement } from "./actions";
+import { Badge, Card, EmptyState, PageHeader } from "@/components/ui";
+import { createAnnouncement } from "./actions";
 import { AnnouncementForm } from "./announcement-form";
 
 export const metadata = { title: "Announcements — Admin — The Optimist Club" };
@@ -85,17 +85,15 @@ export default async function AdminAnnouncementsPage({
                       {canDelete ? (
                         <>
                           <span className="mx-2 text-navy-200">|</span>
-                          <form action={deleteAnnouncement} className="inline">
-                            <input type="hidden" name="announcementId" value={a.id} />
-                            <input type="hidden" name="confirm" value="1" />
-                            <Button
-                              type="submit"
-                              variant="ghost"
-                              className="px-0 py-0 font-medium text-red-700 underline-offset-2 hover:bg-transparent hover:underline"
-                            >
-                              Delete
-                            </Button>
-                          </form>
+                          {/* Deleting is permanent, so it lives behind the
+                              confirmation flow on the edit page — never one
+                              click away in a row of links. */}
+                          <Link
+                            href={`/admin/announcements/${a.id}/edit#delete`}
+                            className="font-medium text-red-700 underline-offset-2 hover:underline"
+                          >
+                            Delete…
+                          </Link>
                         </>
                       ) : null}
                     </td>
