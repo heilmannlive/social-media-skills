@@ -5,21 +5,21 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "The Optimist Club",
-    template: "%s · The Optimist Club",
+    default: "The Optimists Club",
+    template: "%s · The Optimists Club",
   },
   description:
     "A private community restoring confidence, agency, and intellectual courage in Germany and Europe.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    title: "Optimist Club",
+    title: "Optimists Club",
     statusBarStyle: "default",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a1628",
+  themeColor: "#002d57",
   width: "device-width",
   initialScale: 1,
 };

@@ -4,7 +4,7 @@ import { timeAgo } from "@/lib/format";
 import { Button, Card, EmptyState, PageHeader } from "@/components/ui";
 import { markAllNotificationsRead, openNotification } from "./actions";
 
-export const metadata = { title: "Notifications — The Optimist Club" };
+export const metadata = { title: "Notifications — The Optimists Club" };
 
 export default async function NotificationsPage() {
   const user = await requireUser();
@@ -48,7 +48,7 @@ export default async function NotificationsPage() {
             return (
               <Card
                 key={n.id}
-                className={`p-0 ${unread ? "border-l-4 border-l-gold-500" : ""}`}
+                className={`p-0 ${unread ? "border-l-4 border-l-accent-500" : ""}`}
               >
                 <form action={openNotification}>
                   <input type="hidden" name="notificationId" value={n.id} />

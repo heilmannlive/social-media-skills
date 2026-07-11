@@ -14,7 +14,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-30 border-b border-navy-100 bg-paper/90 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link href="/" aria-label="The Optimist Club — home">
+          <Link href="/" aria-label="The Optimists Club — home">
             <Wordmark />
           </Link>
           <nav aria-label="Main" className="flex items-center gap-1 sm:gap-2">
@@ -33,7 +33,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             >
               Sign in
             </Link>
-            <ButtonLink href="/join" variant="gold" className="ml-1">
+            <ButtonLink href="/join" variant="accent" className="ml-1">
               Apply to join
             </ButtonLink>
           </nav>
@@ -58,22 +58,22 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
               </p>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>
-                  <Link href="/#charter" className="hover:text-gold-300">
+                  <Link href="/#charter" className="hover:text-accent-300">
                     Our charter
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#membership" className="hover:text-gold-300">
+                  <Link href="/#membership" className="hover:text-accent-300">
                     Membership
                   </Link>
                 </li>
                 <li>
-                  <Link href="/join" className="hover:text-gold-300">
+                  <Link href="/join" className="hover:text-accent-300">
                     Apply to join
                   </Link>
                 </li>
                 <li>
-                  <Link href="/login" className="hover:text-gold-300">
+                  <Link href="/login" className="hover:text-accent-300">
                     Member sign in
                   </Link>
                 </li>
@@ -87,7 +87,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                 <li>
                   <a
                     href="mailto:hello@optimists-club.com"
-                    className="hover:text-gold-300"
+                    className="hover:text-accent-300"
                   >
                     hello@optimists-club.com
                   </a>
@@ -98,10 +98,10 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
           </div>
           <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-navy-800 pt-6 text-xs text-navy-400">
             <p className="inline-flex items-center gap-2">
-              <Sunrise className="h-4 w-4 text-gold-500" />
-              The Optimist Club — optimists-club.com
+              <Sunrise className="h-4 w-4 text-accent-500" />
+              The Optimists Club — optimists-club.com
             </p>
-            <p>&copy; 2026 The Optimist Club. All rights reserved.</p>
+            <p>&copy; 2026 The Optimists Club. All rights reserved.</p>
           </div>
         </div>
       </footer>

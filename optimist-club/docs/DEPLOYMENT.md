@@ -1,6 +1,6 @@
 # Deployment
 
-This guide covers taking The Optimist Club from local development to production at **optimists-club.com**.
+This guide covers taking The Optimists Club from local development to production at **optimists-club.com**.
 
 ## 1. Choose a platform
 

@@ -1,33 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand: confident European navy + warm gold, on warm paper. */
-  --color-navy-50: #f0f4f9;
-  --color-navy-100: #dce5f0;
-  --color-navy-200: #bccde2;
-  --color-navy-300: #90adce;
-  --color-navy-400: #5d87b5;
-  --color-navy-500: #3b6a9c;
-  --color-navy-600: #2b5482;
-  --color-navy-700: #24446a;
-  --color-navy-800: #1c3350;
-  --color-navy-900: #142540;
-  --color-navy-950: #0a1628;
+  /*
+   * Brand palette — The Optimists Club
+   *   Neon Blue        #005EFF  → navy-600 (primary)
+   *   Deep Blue (IEG)  #002D57  → navy-950 (ink, dark surfaces)
+   *   Light Grey Blue  #87C4FF  → navy-300
+   *   Neon Green       #32FE6B  → accent-500 (call-to-action accent)
+   *   Beige            #E5E3D3  → paper (page background)
+   * The navy-* and accent-* scales are ramps built around those anchors.
+   */
+  --color-navy-50: #eef4ff;
+  --color-navy-100: #dbe9ff;
+  --color-navy-200: #bcd7ff;
+  --color-navy-300: #87c4ff;
+  --color-navy-400: #5a9bff;
+  --color-navy-500: #2f7bff;
+  --color-navy-600: #005eff;
+  --color-navy-700: #004ecc;
+  --color-navy-800: #003d99;
+  --color-navy-900: #003166;
+  --color-navy-950: #002d57;
 
-  --color-gold-50: #fbf8eb;
-  --color-gold-100: #f5eecb;
-  --color-gold-200: #ecdc99;
-  --color-gold-300: #e1c45e;
-  --color-gold-400: #d7ae37;
-  --color-gold-500: #c9a227;
-  --color-gold-600: #a97f1f;
-  --color-gold-700: #875e1c;
-  --color-gold-800: #714c1e;
-  --color-gold-900: #613f1f;
-  --color-gold-950: #38210e;
+  --color-accent-50: #effff4;
+  --color-accent-100: #d8ffe5;
+  --color-accent-200: #b0ffca;
+  --color-accent-300: #7dffa8;
+  --color-accent-400: #55ff8b;
+  --color-accent-500: #32fe6b;
+  --color-accent-600: #00d148;
+  --color-accent-700: #00a838;
+  --color-accent-800: #006b26;
+  --color-accent-900: #05541f;
+  --color-accent-950: #003814;
 
-  --color-paper: #f7f5f0;
-  --color-ink: #16202e;
+  --color-paper: #e5e3d3;
+  --color-ink: #002d57;
 
   --font-display: Georgia, "Times New Roman", Cambria, serif;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,

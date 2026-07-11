@@ -3,35 +3,19 @@ import type { Metadata } from "next";
 import { ButtonLink } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "The Optimist Club — A private community for builders of Europe's future",
+  title: "The Optimists Club — A private community for builders of Europe's future",
   description:
-    "Europe does not lack intelligence. It lacks confidence. The Optimist Club convenes entrepreneurs, athletes, executives, and public leaders committed to restoring confidence, agency, and intellectual courage in Germany and Europe.",
+    "Europe does not lack intelligence. It lacks confidence. The Optimists Club convenes entrepreneurs, athletes, executives, and public leaders committed to restoring confidence, agency, and intellectual courage in Germany and Europe.",
 };
 
-/** Large decorative rising-sun motif for the hero. Purely ornamental. */
+/** Oversized brand-mark motif for the hero. Purely ornamental. */
 function SunriseMotif({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 600 320"
-      fill="none"
-      className={className}
-      aria-hidden="true"
-    >
-      {/* Rays */}
-      <g stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-        <path d="M300 20v50" />
-        <path d="M180 55l30 40" />
-        <path d="M420 55l-30 40" />
-        <path d="M90 130l48 24" />
-        <path d="M510 130l-48 24" />
-      </g>
-      {/* Half sun */}
-      <path d="M300 100a120 120 0 0 1 120 120H180a120 120 0 0 1 120-120Z" fill="currentColor" />
-      {/* Horizon lines */}
-      <g stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-        <path d="M60 250h480" />
-        <path d="M130 285h340" />
-        <path d="M210 318h180" />
+    <svg viewBox="0 0 64 64" fill="none" className={className} aria-hidden="true">
+      <g stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14 50V22a10 10 0 0 1 10-10" />
+        <path d="M25 50V22a10 10 0 0 1 10-10" />
+        <path d="M36 50V22a10 10 0 0 1 10-10" />
       </g>
     </svg>
   );
@@ -109,28 +93,28 @@ export default function HomePage() {
     <>
       {/* HERO */}
       <section className="relative overflow-hidden bg-navy-950 text-white">
-        <SunriseMotif className="pointer-events-none absolute -right-24 -top-10 hidden w-[560px] text-gold-500/15 lg:block" />
+        <SunriseMotif className="pointer-events-none absolute -right-24 -top-10 hidden w-[560px] text-accent-500/15 lg:block" />
         <SunriseMotif className="pointer-events-none absolute -bottom-40 -left-32 w-[480px] rotate-180 text-navy-800/60" />
         <div className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold-400">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-400">
             A private community for builders of Europe&rsquo;s future
           </p>
           <h1 className="mt-6 max-w-3xl font-display text-4xl leading-tight sm:text-5xl md:text-6xl">
             Europe does not lack intelligence.{" "}
-            <span className="text-gold-300">It lacks confidence.</span>
+            <span className="text-accent-300">It lacks confidence.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-navy-200">
-            The Optimist Club exists to restore confidence, agency, and
+            The Optimists Club exists to restore confidence, agency, and
             intellectual courage in Germany and Europe — by convening the
             people willing to think, build, and lead.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <ButtonLink href="/join" variant="gold" className="px-6 py-3 text-base">
+            <ButtonLink href="/join" variant="accent" className="px-6 py-3 text-base">
               Apply to join
             </ButtonLink>
             <Link
               href="/login"
-              className="inline-flex items-center justify-center rounded-md border border-navy-500 px-6 py-3 text-base font-semibold text-white transition-colors hover:border-gold-400 hover:text-gold-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+              className="inline-flex items-center justify-center rounded-md border border-navy-500 px-6 py-3 text-base font-semibold text-white transition-colors hover:border-accent-400 hover:text-accent-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400"
             >
               Member sign in
             </Link>
@@ -141,7 +125,7 @@ export default function HomePage() {
       {/* CHARTER */}
       <section id="charter" className="scroll-mt-20">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold-600">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-600">
             Our charter
           </p>
           <h2 className="mt-4 max-w-3xl font-display text-3xl text-navy-950 sm:text-4xl">
@@ -169,7 +153,7 @@ export default function HomePage() {
                 key={belief.title}
                 className="rounded-xl border border-navy-100 bg-white p-6 shadow-[0_1px_3px_rgba(10,22,40,0.06)]"
               >
-                <p className="font-display text-sm text-gold-600">
+                <p className="font-display text-sm text-accent-600">
                   {String(i + 1).padStart(2, "0")}
                 </p>
                 <h4 className="mt-2 font-display text-xl text-navy-950">
@@ -191,7 +175,7 @@ export default function HomePage() {
                 key={item}
                 className="flex items-start gap-3 rounded-lg border border-navy-100 bg-navy-50 px-4 py-3 text-sm font-medium text-navy-800"
               >
-                <span aria-hidden="true" className="mt-0.5 text-gold-600">
+                <span aria-hidden="true" className="mt-0.5 text-accent-600">
                   ✕
                 </span>
                 {item}
@@ -204,7 +188,7 @@ export default function HomePage() {
       {/* WHO WE CONVENE */}
       <section className="border-y border-navy-100 bg-white">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold-600">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-600">
             Who we convene
           </p>
           <h2 className="mt-4 max-w-3xl font-display text-3xl text-navy-950 sm:text-4xl">
@@ -218,7 +202,7 @@ export default function HomePage() {
           </p>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {CONVENED.map((group) => (
-              <div key={group.title} className="border-t-2 border-gold-500 pt-4">
+              <div key={group.title} className="border-t-2 border-accent-500 pt-4">
                 <h3 className="font-display text-lg text-navy-950">
                   {group.title}
                 </h3>
@@ -234,7 +218,7 @@ export default function HomePage() {
       {/* MEMBERSHIP */}
       <section id="membership" className="scroll-mt-20">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold-600">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-600">
             Membership
           </p>
           <h2 className="mt-4 max-w-3xl font-display text-3xl text-navy-950 sm:text-4xl">
@@ -246,7 +230,7 @@ export default function HomePage() {
                 key={step.step}
                 className="rounded-xl border border-navy-100 bg-white p-6 shadow-[0_1px_3px_rgba(10,22,40,0.06)]"
               >
-                <p className="font-display text-3xl text-gold-500">{step.step}</p>
+                <p className="font-display text-3xl text-accent-500">{step.step}</p>
                 <h3 className="mt-3 font-display text-xl text-navy-950">
                   {step.title}
                 </h3>
@@ -256,7 +240,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-6 rounded-xl border border-gold-200 bg-gold-50 px-6 py-6 sm:px-8">
+          <div className="mt-10 flex flex-wrap items-center justify-between gap-6 rounded-xl border border-accent-200 bg-accent-50 px-6 py-6 sm:px-8">
             <div>
               <p className="font-display text-lg text-navy-950">
                 Annual dues: €240 per year
@@ -267,7 +251,7 @@ export default function HomePage() {
                 else.
               </p>
             </div>
-            <ButtonLink href="/join" variant="gold" className="px-6 py-3 text-base">
+            <ButtonLink href="/join" variant="accent" className="px-6 py-3 text-base">
               Apply to join
             </ButtonLink>
           </div>
@@ -276,14 +260,14 @@ export default function HomePage() {
 
       {/* CLOSING BAND */}
       <section className="relative overflow-hidden bg-navy-950 text-white">
-        <SunriseMotif className="pointer-events-none absolute -bottom-32 left-1/2 w-[640px] -translate-x-1/2 text-gold-500/10" />
+        <SunriseMotif className="pointer-events-none absolute -bottom-32 left-1/2 w-[640px] -translate-x-1/2 text-accent-500/10" />
         <div className="relative mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 sm:py-24">
           <p className="font-display text-2xl leading-relaxed text-navy-100 sm:text-3xl">
             &ldquo;Not to protest the world as it is — but to help shape what
             it can become.&rdquo;
           </p>
           <div className="mt-10">
-            <ButtonLink href="/join" variant="gold" className="px-8 py-3 text-base">
+            <ButtonLink href="/join" variant="accent" className="px-8 py-3 text-base">
               Apply to join
             </ButtonLink>
           </div>

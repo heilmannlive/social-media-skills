@@ -14,7 +14,7 @@ import {
 } from "@/components/ui";
 import { createInvite } from "./actions";
 
-export const metadata = { title: "Invitations — The Optimist Club" };
+export const metadata = { title: "Invitations — The Optimists Club" };
 
 const ERRORS: Record<string, string> = {
   "invalid-code": "Custom codes need 4–32 letters, numbers, or dashes (no leading or trailing dash).",
@@ -50,7 +50,7 @@ export default async function AdminInvitesPage({
       {params.created ? (
         <div
           role="status"
-          className="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+          className="mb-6 rounded-md border border-accent-200 bg-accent-50 px-4 py-3 text-sm text-accent-800"
         >
           Invitation code{" "}
           <span className="font-mono font-semibold">{params.created}</span> created. Share
@@ -103,7 +103,7 @@ export default async function AdminInvitesPage({
               <Input id="expiresInDays" name="expiresInDays" type="number" min={1} max={365} />
             </Field>
             <div className="sm:col-span-2 lg:col-span-4">
-              <Button type="submit" variant="gold">
+              <Button type="submit" variant="accent">
                 Create invitation
               </Button>
             </div>

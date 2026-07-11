@@ -6,7 +6,7 @@ import { formatDateTime } from "@/lib/format";
 import { Avatar, Badge, Button, Card } from "@/components/ui";
 import { attendEvent, declineEvent } from "../actions";
 
-export const metadata = { title: "Event — The Optimist Club" };
+export const metadata = { title: "Event — The Optimists Club" };
 
 export default async function EventDetailPage({
   params,
@@ -80,11 +80,11 @@ export default async function EventDetailPage({
       ) : (
         <Card>
           {mine?.status === "GOING" ? (
-            <p className="text-sm font-medium text-emerald-800">
+            <p className="text-sm font-medium text-accent-800">
               You&rsquo;re confirmed for this event. We look forward to seeing you.
             </p>
           ) : mine?.status === "WAITLIST" ? (
-            <p className="text-sm font-medium text-gold-800">
+            <p className="text-sm font-medium text-accent-800">
               You&rsquo;re on the waitlist — position {waitlistPosition}. The moment a spot
               opens, you&rsquo;re in, and we&rsquo;ll notify you right away.
             </p>
@@ -104,7 +104,7 @@ export default async function EventDetailPage({
             {mine?.status !== "GOING" && !(mine?.status === "WAITLIST" && isFull) ? (
               <form action={attendEvent}>
                 <input type="hidden" name="eventId" value={event.id} />
-                <Button type="submit" variant="gold">
+                <Button type="submit" variant="accent">
                   {isFull ? "Join the waitlist" : "Attend"}
                 </Button>
               </form>
@@ -156,7 +156,7 @@ export default async function EventDetailPage({
             aria-label="Confirmed attendance"
           >
             <div
-              className={`h-full rounded-full ${capacityPct >= 100 ? "bg-gold-500" : "bg-navy-800"}`}
+              className={`h-full rounded-full ${capacityPct >= 100 ? "bg-accent-500" : "bg-navy-800"}`}
               style={{ width: `${capacityPct}%` }}
             />
           </div>

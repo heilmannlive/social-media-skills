@@ -12,7 +12,7 @@ import {
 } from "@/components/ui";
 import { changePassword, updateProfile } from "./actions";
 
-export const metadata = { title: "Account — The Optimist Club" };
+export const metadata = { title: "Account — The Optimists Club" };
 
 const MESSAGES: Record<string, { tone: "success" | "error"; text: string }> = {
   "saved:profile": { tone: "success", text: "Your profile has been updated." },
@@ -44,7 +44,7 @@ function Banner({ messageKey }: { messageKey: string | null }) {
       role="status"
       className={
         msg.tone === "success"
-          ? "mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+          ? "mb-6 rounded-md border border-accent-200 bg-accent-50 px-4 py-3 text-sm text-accent-800"
           : "mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
       }
     >

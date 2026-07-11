@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { timeAgo } from "@/lib/format";
 import { Avatar, Badge, Card, EmptyState, PageHeader, StatusBadge } from "@/components/ui";
 
-export const metadata = { title: "Announcements — The Optimist Club" };
+export const metadata = { title: "Announcements — The Optimists Club" };
 
 export default async function AnnouncementsPage() {
   const user = await requireRole("MEMBER");
@@ -36,7 +36,7 @@ export default async function AnnouncementsPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <h2 className="font-display text-lg text-navy-950">{a.title}</h2>
-                    {a.pinned ? <Badge tone="gold">Pinned</Badge> : null}
+                    {a.pinned ? <Badge tone="accent">Pinned</Badge> : null}
                     {a.audience === "BOARD" ? <Badge tone="navy">Board</Badge> : null}
                   </div>
                   <p className="mt-0.5 flex flex-wrap items-center gap-2 text-xs text-navy-400">

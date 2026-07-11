@@ -56,7 +56,7 @@ export async function AppShell({ user, children }: { user: User; children: React
                 />
               </svg>
               {unread > 0 ? (
-                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold-500 px-1 text-[10px] font-bold text-navy-950">
+                <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-500 px-1 text-[10px] font-bold text-navy-950">
                   {unread > 9 ? "9+" : unread}
                 </span>
               ) : null}

@@ -11,7 +11,7 @@ import {
   PageHeader,
 } from "@/components/ui";
 
-export const metadata = { title: "Members — The Optimist Club" };
+export const metadata = { title: "Members — The Optimists Club" };
 
 function expertiseTags(expertise: string | null): string[] {
   if (!expertise) return [];
@@ -104,7 +104,7 @@ export default async function MembersPage({
                         <p className="flex flex-wrap items-center gap-2 font-semibold text-navy-950">
                           <span className="truncate">{m.name}</span>
                           {m.role === "BOARD" || m.role === "ADMIN" ? (
-                            <Badge tone="gold">{m.role === "ADMIN" ? "Admin" : "Board"}</Badge>
+                            <Badge tone="accent">{m.role === "ADMIN" ? "Admin" : "Board"}</Badge>
                           ) : null}
                         </p>
                         {position ? (

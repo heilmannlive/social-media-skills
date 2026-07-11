@@ -37,7 +37,7 @@ export default async function JoinPage({
     <Card className="w-full max-w-xl p-8">
       <h1 className="font-display text-2xl text-navy-950">Apply to join</h1>
       <p className="mt-3 text-sm leading-relaxed text-navy-600">
-        The Optimist Club is a private, high-trust community of entrepreneurs, executives,
+        The Optimists Club is a private, high-trust community of entrepreneurs, executives,
         athletes, and public servants who believe Europe&apos;s best days are ahead. Every
         application is reviewed personally by the board — tell us who you are and why you want
         to be in the room.
@@ -165,7 +165,7 @@ export default async function JoinPage({
           />
         </Field>
 
-        <Button type="submit" variant="gold" className="w-full">
+        <Button type="submit" variant="accent" className="w-full">
           Submit application
         </Button>
       </form>

@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { formatDateTime, timeAgo } from "@/lib/format";
 import { Badge, ButtonLink, Card, StatusBadge } from "@/components/ui";
 
-export const metadata = { title: "Dashboard — The Optimist Club" };
+export const metadata = { title: "Dashboard — The Optimists Club" };
 
 /** Charter-inspired maxims, rotated by day of year. */
 const MAXIMS = [
@@ -154,7 +154,7 @@ export default async function DashboardPage() {
         <div>
           <h2 className="mb-3 font-display text-xl text-navy-900">Membership {year}</h2>
           {duesPaid ? (
-            <Card className="border-emerald-200">
+            <Card className="border-accent-200">
               <div className="flex items-center justify-between gap-3">
                 <p className="font-semibold text-navy-900">Dues for {year}</p>
                 <Badge tone="green">Paid</Badge>
@@ -167,7 +167,7 @@ export default async function DashboardPage() {
             <Card className="border-amber-200">
               <div className="flex items-center justify-between gap-3">
                 <p className="font-semibold text-navy-900">Dues for {year}</p>
-                <Badge tone="gold">Pending</Badge>
+                <Badge tone="accent">Pending</Badge>
               </div>
               {duesPendingTransfer ? (
                 <p className="mt-2 text-sm text-navy-600">
@@ -196,7 +196,7 @@ export default async function DashboardPage() {
                 Your {year} membership dues are still open. Settle them in a minute on the
                 membership page.
               </p>
-              <ButtonLink href="/membership" variant="gold" className="mt-4 w-full">
+              <ButtonLink href="/membership" variant="accent" className="mt-4 w-full">
                 Pay membership dues
               </ButtonLink>
             </Card>
@@ -230,7 +230,7 @@ export default async function DashboardPage() {
                     <p className="font-semibold text-navy-900 underline-offset-2 group-hover:underline">
                       {a.title}
                     </p>
-                    {a.pinned ? <Badge tone="gold">Pinned</Badge> : null}
+                    {a.pinned ? <Badge tone="accent">Pinned</Badge> : null}
                     {a.audience === "BOARD" ? <Badge tone="navy">Board</Badge> : null}
                   </div>
                   <p className="mt-1 text-xs text-navy-400">

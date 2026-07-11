@@ -1,4 +1,4 @@
-// The Optimist Club — data model
+// The Optimists Club — data model
 //
 // SQLite is used for development so the app runs with zero external services.
 // For production, change `provider` to "postgresql" and set DATABASE_URL —

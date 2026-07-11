@@ -7,7 +7,7 @@ import { Wordmark } from "@/components/logo";
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col items-center px-4 py-10 sm:justify-center sm:py-16">
-      <Link href="/" className="mb-8" aria-label="The Optimist Club — home">
+      <Link href="/" className="mb-8" aria-label="The Optimists Club — home">
         <Wordmark />
       </Link>
       <div className="flex w-full flex-col items-center">{children}</div>

@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { formatDateTime } from "@/lib/format";
 import { Badge, ButtonLink, Card, EmptyState, PageHeader } from "@/components/ui";
 
-export const metadata = { title: "Events — Admin — The Optimist Club" };
+export const metadata = { title: "Events — Admin — The Optimists Club" };
 
 export default async function AdminEventsPage() {
   await requireRole("BOARD");

@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/ui";
 import { createEvent } from "../actions";
 import { EventForm, type EventFormEcho } from "../event-form";
 
-export const metadata = { title: "New event — Admin — The Optimist Club" };
+export const metadata = { title: "New event — Admin — The Optimists Club" };
 
 export default async function NewEventPage({
   searchParams,

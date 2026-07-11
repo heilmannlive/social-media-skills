@@ -62,7 +62,7 @@ export async function POST(): Promise<NextResponse> {
           price_data: {
             currency: MEMBERSHIP_FEE.currency,
             product_data: {
-              name: `The Optimist Club — membership dues ${year}`,
+              name: `The Optimists Club — membership dues ${year}`,
             },
             unit_amount: MEMBERSHIP_FEE.amountCents,
           },

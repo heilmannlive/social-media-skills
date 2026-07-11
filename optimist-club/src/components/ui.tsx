@@ -11,7 +11,8 @@ function cx(...classes: Array<string | false | null | undefined>): string {
 const buttonVariants = {
   primary:
     "bg-navy-900 text-white hover:bg-navy-800 focus-visible:outline-navy-900 disabled:bg-navy-300",
-  gold: "bg-gold-500 text-navy-950 hover:bg-gold-400 focus-visible:outline-gold-600 disabled:bg-gold-200",
+  accent:
+    "bg-accent-500 text-navy-950 hover:bg-accent-400 focus-visible:outline-accent-600 disabled:bg-accent-200",
   outline:
     "border border-navy-300 text-navy-900 hover:bg-navy-50 focus-visible:outline-navy-900 disabled:text-navy-300",
   danger: "bg-red-700 text-white hover:bg-red-600 focus-visible:outline-red-700 disabled:bg-red-300",
@@ -127,8 +128,8 @@ export function Field({
 
 const badgeTones = {
   navy: "bg-navy-100 text-navy-800",
-  gold: "bg-gold-100 text-gold-800",
-  green: "bg-emerald-100 text-emerald-800",
+  accent: "bg-accent-100 text-accent-800",
+  green: "bg-accent-100 text-accent-800",
   red: "bg-red-100 text-red-800",
   gray: "bg-slate-100 text-slate-700",
 } as const;
@@ -159,7 +160,7 @@ export function Badge({
 export function StatusBadge({ value }: { value: string }) {
   const tone =
     value === "ADMIN" || value === "BOARD"
-      ? "gold"
+      ? "accent"
       : value === "ACTIVE" || value === "MEMBER" || value === "PAID" || value === "GOING"
         ? "green"
         : value === "SUSPENDED" || value === "FAILED" || value === "DECLINED"
@@ -181,7 +182,7 @@ export function Avatar({
   return (
     <span
       className={cx(
-        "inline-flex shrink-0 items-center justify-center rounded-full bg-navy-800 font-semibold text-gold-300",
+        "inline-flex shrink-0 items-center justify-center rounded-full bg-navy-800 font-semibold text-accent-300",
         sizes[size],
         className
       )}

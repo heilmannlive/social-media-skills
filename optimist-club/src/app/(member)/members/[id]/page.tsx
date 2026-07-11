@@ -57,7 +57,7 @@ export default async function MemberProfilePage({
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="font-display text-xl text-navy-950">{member.name}</h2>
                 {member.role === "BOARD" || member.role === "ADMIN" ? (
-                  <Badge tone="gold">{member.role === "ADMIN" ? "Admin" : "Board"}</Badge>
+                  <Badge tone="accent">{member.role === "ADMIN" ? "Admin" : "Board"}</Badge>
                 ) : null}
               </div>
               {position ? <p className="mt-1 text-sm text-navy-600">{position}</p> : null}

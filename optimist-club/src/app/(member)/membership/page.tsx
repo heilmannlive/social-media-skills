@@ -6,7 +6,7 @@ import { isStripeConfigured, MEMBERSHIP_FEE } from "@/lib/stripe";
 import { Badge, Button, Card, EmptyState, PageHeader, StatusBadge } from "@/components/ui";
 import { reportTransfer } from "./actions";
 
-export const metadata = { title: "Membership — The Optimist Club" };
+export const metadata = { title: "Membership — The Optimists Club" };
 
 const METHOD_LABELS: Record<string, string> = {
   STRIPE: "Card (Stripe)",
@@ -21,7 +21,7 @@ function methodLabel(method: string): string {
 function Banner({ kind, children }: { kind: "success" | "info" | "error"; children: React.ReactNode }) {
   const styles =
     kind === "success"
-      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+      ? "border-accent-200 bg-accent-50 text-accent-800"
       : kind === "error"
         ? "border-red-200 bg-red-50 text-red-800"
         : "border-navy-200 bg-navy-50 text-navy-800";
@@ -104,7 +104,7 @@ export default async function MembershipPage({
             {isPaid ? (
               <StatusBadge value="PAID" />
             ) : isPending ? (
-              <Badge tone="gold">PENDING</Badge>
+              <Badge tone="accent">PENDING</Badge>
             ) : (
               <Badge tone="gray">UNPAID</Badge>
             )}
@@ -131,7 +131,7 @@ export default async function MembershipPage({
 
           {!isPaid && stripeReady ? (
             <form method="POST" action="/api/stripe/checkout" className="mt-5">
-              <Button type="submit" variant="gold">
+              <Button type="submit" variant="accent">
                 Pay {formatMoney(MEMBERSHIP_FEE.amountCents, MEMBERSHIP_FEE.currency)} with card
               </Button>
             </form>
@@ -148,7 +148,7 @@ export default async function MembershipPage({
           <dl className="mt-4 space-y-2 text-sm">
             <div className="flex justify-between gap-4">
               <dt className="text-navy-500">Account holder</dt>
-              <dd className="font-medium text-navy-900">The Optimist Club</dd>
+              <dd className="font-medium text-navy-900">The Optimists Club</dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-navy-500">IBAN</dt>

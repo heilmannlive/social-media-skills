@@ -3,7 +3,7 @@ import { requireRole } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Card, PageHeader } from "@/components/ui";
 
-export const metadata = { title: "Administration — The Optimist Club" };
+export const metadata = { title: "Administration — The Optimists Club" };
 
 export default async function AdminOverviewPage() {
   await requireRole("BOARD");

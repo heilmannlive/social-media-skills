@@ -6,7 +6,7 @@ import { Badge, Card, EmptyState, PageHeader } from "@/components/ui";
 import { createAnnouncement } from "./actions";
 import { AnnouncementForm } from "./announcement-form";
 
-export const metadata = { title: "Announcements — Admin — The Optimist Club" };
+export const metadata = { title: "Announcements — Admin — The Optimists Club" };
 
 export default async function AdminAnnouncementsPage({
   searchParams,
@@ -69,7 +69,7 @@ export default async function AdminAnnouncementsPage({
                       )}
                     </td>
                     <td className="px-4 py-3.5">
-                      {a.pinned ? <Badge tone="gold">Pinned</Badge> : <span className="text-navy-300">—</span>}
+                      {a.pinned ? <Badge tone="accent">Pinned</Badge> : <span className="text-navy-300">—</span>}
                     </td>
                     <td className="px-4 py-3.5 text-navy-600">{a.author.name}</td>
                     <td className="whitespace-nowrap px-4 py-3.5 text-navy-600">

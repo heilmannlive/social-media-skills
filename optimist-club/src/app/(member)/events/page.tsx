@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { formatDate, formatDateTime } from "@/lib/format";
 import { Badge, Card, EmptyState, PageHeader } from "@/components/ui";
 
-export const metadata = { title: "Events — The Optimist Club" };
+export const metadata = { title: "Events — The Optimists Club" };
 
 type RsvpSlice = { userId: string; status: string };
 
@@ -12,7 +12,7 @@ function myRsvpBadge(rsvps: RsvpSlice[], userId: string) {
   const mine = rsvps.find((r) => r.userId === userId);
   if (!mine) return <Badge tone="gray">No response yet</Badge>;
   if (mine.status === "GOING") return <Badge tone="green">You&rsquo;re going</Badge>;
-  if (mine.status === "WAITLIST") return <Badge tone="gold">Waitlisted</Badge>;
+  if (mine.status === "WAITLIST") return <Badge tone="accent">Waitlisted</Badge>;
   return <Badge tone="red">Not attending</Badge>;
 }
 
@@ -26,7 +26,7 @@ function DateBlock({ date }: { date: Date }) {
       className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-lg bg-navy-900 text-white"
       aria-hidden="true"
     >
-      <span className="text-[11px] font-semibold uppercase tracking-wider text-gold-300">
+      <span className="text-[11px] font-semibold uppercase tracking-wider text-accent-300">
         {date.toLocaleDateString("en-US", { month: "short" })}
       </span>
       <span className="font-display text-2xl leading-none">

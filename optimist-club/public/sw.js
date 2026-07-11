@@ -1,4 +1,4 @@
-// The Optimist Club — minimal, safe service worker.
+// The Optimists Club — minimal, safe service worker.
 //
 // Strategy:
 //   - static assets under /icons/ and the manifest: cache-first

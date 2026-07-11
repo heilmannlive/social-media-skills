@@ -6,7 +6,7 @@ import { Button, Card, PageHeader } from "@/components/ui";
 import { deleteAnnouncement, updateAnnouncement } from "../../actions";
 import { AnnouncementForm } from "../../announcement-form";
 
-export const metadata = { title: "Edit announcement — Admin — The Optimist Club" };
+export const metadata = { title: "Edit announcement — Admin — The Optimists Club" };
 
 export default async function EditAnnouncementPage({
   params,

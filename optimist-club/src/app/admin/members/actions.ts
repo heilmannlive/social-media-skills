@@ -40,7 +40,7 @@ export async function approveApplication(formData: FormData): Promise<void> {
     data: { role: "MEMBER", status: "ACTIVE", memberSince: new Date() },
   });
   await notifyUser(target.id, {
-    title: "Welcome to The Optimist Club",
+    title: "Welcome to The Optimists Club",
     body: "Your application has been approved. We're glad to have you with us.",
     href: "/dashboard",
   });

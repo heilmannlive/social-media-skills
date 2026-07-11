@@ -1,4 +1,4 @@
-# Optimist Club — engineering conventions (for all contributors/agents)
+# Optimists Club — engineering conventions (for all contributors/agents)
 
 Stack: Next.js 15 App Router, React 19, TypeScript strict, Tailwind CSS v4, Prisma 6 + SQLite (dev), custom cookie-session auth. All code and UI copy in **US English**. Tone: confident, warm, serious — never corporate-bland or hype.
 

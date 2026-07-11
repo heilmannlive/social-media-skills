@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { formatDateTime } from "@/lib/format";
 import { Avatar, Badge, ButtonLink, Card, PageHeader } from "@/components/ui";
 
-export const metadata = { title: "Event RSVPs — Admin — The Optimist Club" };
+export const metadata = { title: "Event RSVPs — Admin — The Optimists Club" };
 
 type RsvpWithUser = {
   id: string;
@@ -28,7 +28,7 @@ function RsvpGroup({
   emptyText,
 }: {
   heading: string;
-  tone: "green" | "gold" | "red";
+  tone: "green" | "accent" | "red";
   rsvps: RsvpWithUser[];
   numbered?: boolean;
   emptyText: string;
@@ -153,7 +153,7 @@ export default async function AdminEventRsvpsPage({
           />
           <RsvpGroup
             heading="Waitlist"
-            tone="gold"
+            tone="accent"
             rsvps={waitlist}
             numbered
             emptyText="The waitlist is empty."

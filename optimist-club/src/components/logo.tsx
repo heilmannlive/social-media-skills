@@ -1,35 +1,77 @@
-export function Sunrise({ className = "h-6 w-6" }: { className?: string }) {
-  // Rising-sun mark: half sun over a horizon line.
+/**
+ * Brand mark for The Optimists Club: three forward-leaning "leaves" (open
+ * rounded strokes) that read as motion and optimism, matching the primary
+ * logo. `tone` controls the stroke color so it works on light and dark.
+ */
+export function Leaves({
+  className = "h-7 w-7",
+  tone = "currentColor",
+}: {
+  className?: string;
+  tone?: string;
+}) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
-      <path d="M12 5.5a6.5 6.5 0 0 1 6.5 6.5h-13A6.5 6.5 0 0 1 12 5.5Z" fill="currentColor" />
-      <path
-        d="M2 15h20M5 18.5h14"
-        stroke="currentColor"
-        strokeWidth="1.6"
+    <svg viewBox="0 0 64 64" fill="none" className={className} aria-hidden="true">
+      <g
+        stroke={tone}
+        strokeWidth="4.5"
         strokeLinecap="round"
-      />
-      <path
-        d="M12 1.5v2M4.6 4.6l1.4 1.4M19.4 4.6 18 6M1.5 12h2M20.5 12h2"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
+        strokeLinejoin="round"
+      >
+        {/* Three nested hooks, each offset to the right, leaning forward. */}
+        <path d="M14 50V22a10 10 0 0 1 10-10" />
+        <path d="M25 50V22a10 10 0 0 1 10-10" />
+        <path d="M36 50V22a10 10 0 0 1 10-10" />
+      </g>
     </svg>
   );
 }
 
+/**
+ * Full logo lockup: the leaves mark beside the stacked "THE / optimists /
+ * CLUB" wordmark. On dark surfaces pass `light`.
+ */
 export function Wordmark({ light = false }: { light?: boolean }) {
+  const primary = light ? "text-white" : "text-navy-600";
+  const secondary = light ? "text-navy-200" : "text-navy-950";
   return (
-    <span className="inline-flex items-center gap-2">
-      <Sunrise className={`h-6 w-6 ${light ? "text-gold-400" : "text-gold-600"}`} />
-      <span
-        className={`font-display text-lg font-semibold tracking-wide ${
-          light ? "text-white" : "text-navy-950"
-        }`}
-      >
-        The Optimist Club
+    <span className="inline-flex items-center gap-2.5">
+      <Leaves className={`h-8 w-8 ${light ? "text-navy-300" : "text-navy-600"}`} />
+      <span className="leading-[0.95]">
+        <span
+          className={`block text-[0.6rem] font-bold uppercase tracking-[0.35em] ${secondary}`}
+        >
+          The
+        </span>
+        <span className={`block text-lg font-extrabold lowercase tracking-tight ${primary}`}>
+          optimists
+        </span>
+        <span
+          className={`block text-xs font-bold uppercase tracking-[0.3em] ${secondary}`}
+        >
+          Club
+        </span>
       </span>
     </span>
   );
 }
+
+/**
+ * Compact single-line wordmark for tight spaces (e.g. mobile headers).
+ */
+export function WordmarkInline({ light = false }: { light?: boolean }) {
+  return (
+    <span className="inline-flex items-center gap-2">
+      <Leaves className={`h-6 w-6 ${light ? "text-navy-300" : "text-navy-600"}`} />
+      <span
+        className={`font-extrabold tracking-tight ${light ? "text-white" : "text-navy-950"}`}
+      >
+        The <span className="lowercase text-navy-600">optimists</span> Club
+      </span>
+    </span>
+  );
+}
+
+// Back-compat: some pages import `Sunrise`. Alias it to the new mark so those
+// references keep working with the brand logo.
+export const Sunrise = Leaves;

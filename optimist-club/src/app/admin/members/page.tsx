@@ -19,7 +19,7 @@ import {
   suspendMember,
 } from "./actions";
 
-export const metadata = { title: "Members & applications — The Optimist Club" };
+export const metadata = { title: "Members & applications — The Optimists Club" };
 
 const FILTERS = ["ALL", "PENDING", "ACTIVE", "SUSPENDED"] as const;
 type Filter = (typeof FILTERS)[number];
@@ -48,7 +48,7 @@ function RowActions({ user, actorIsAdmin, actorId }: { user: User; actorIsAdmin:
       <div className="flex flex-wrap justify-end gap-2">
         <form action={approveApplication}>
           <input type="hidden" name="userId" value={user.id} />
-          <Button type="submit" variant="gold" className="px-3 py-1.5 text-xs">
+          <Button type="submit" variant="accent" className="px-3 py-1.5 text-xs">
             Approve
           </Button>
         </form>
@@ -132,7 +132,7 @@ function ApplicationCards({ users }: { users: User[] }) {
             <div className="flex flex-wrap gap-2">
               <form action={approveApplication}>
                 <input type="hidden" name="userId" value={u.id} />
-                <Button type="submit" variant="gold" className="px-3 py-1.5 text-xs">
+                <Button type="submit" variant="accent" className="px-3 py-1.5 text-xs">
                   Approve
                 </Button>
               </form>
@@ -145,7 +145,7 @@ function ApplicationCards({ users }: { users: User[] }) {
             </div>
           </div>
           {u.bio ? (
-            <blockquote className="mt-3 border-l-2 border-gold-400 pl-3 text-sm leading-relaxed text-navy-700 whitespace-pre-wrap">
+            <blockquote className="mt-3 border-l-2 border-accent-400 pl-3 text-sm leading-relaxed text-navy-700 whitespace-pre-wrap">
               {u.bio}
             </blockquote>
           ) : null}
@@ -250,7 +250,7 @@ export default async function AdminMembersPage({
       {notice ? (
         <div
           role="status"
-          className="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+          className="mb-6 rounded-md border border-accent-200 bg-accent-50 px-4 py-3 text-sm text-accent-800"
         >
           {notice}
         </div>
@@ -282,7 +282,7 @@ export default async function AdminMembersPage({
 
       {filter === "ALL" && pending.length > 0 ? (
         <div className="mb-8">
-          <div className="rounded-xl border border-gold-500/40 bg-gold-100/40 p-4">
+          <div className="rounded-xl border border-accent-500/40 bg-accent-100/40 p-4">
             <h2 className="mb-3 font-display text-lg text-navy-950">
               Pending applications ({pending.length})
             </h2>

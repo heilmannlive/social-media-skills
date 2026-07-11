@@ -1,6 +1,6 @@
 # Mobile Strategy
 
-The Optimist Club is mobile-ready today as an **installable PWA**, with a clear path to native store apps and push notifications when the club wants them.
+The Optimists Club is mobile-ready today as an **installable PWA**, with a clear path to native store apps and push notifications when the club wants them.
 
 ## Today: installable PWA
 
@@ -17,7 +17,7 @@ What the service worker does — and deliberately does not do:
 1. Open `https://optimists-club.com` in **Safari** (other iOS browsers cannot install PWAs).
 2. Tap the **Share** button (square with an upward arrow).
 3. Scroll and tap **Add to Home Screen**.
-4. Confirm the name ("Optimist Club") and tap **Add**.
+4. Confirm the name ("Optimists Club") and tap **Add**.
 
 The app opens full-screen with the club icon. Sessions persist for 30 days.
 
@@ -31,7 +31,7 @@ The app opens full-screen with the club icon. Sessions persist for 30 days.
 
 If presence in the App Store / Play Store becomes worthwhile (discoverability, native push), wrap the existing web app with [Capacitor](https://capacitorjs.com) rather than rebuilding:
 
-1. Add Capacitor to the project: `npm i @capacitor/core @capacitor/ios @capacitor/android` and `npx cap init "The Optimist Club" com.optimistsclub.app`.
+1. Add Capacitor to the project: `npm i @capacitor/core @capacitor/ios @capacitor/android` and `npx cap init "The Optimists Club" com.optimistsclub.app`.
 2. Configure the wrapper to load the production URL (`server.url = "https://optimists-club.com"` in `capacitor.config.ts`) so the store apps always run the live app — no dual codebase, releases stay server-side.
 3. `npx cap add ios && npx cap add android`, then supply native icons/splash screens (reuse `public/icons/icon.svg` as the source).
 4. Add native niceties incrementally: `@capacitor/push-notifications`, deep links for `/events/*`, biometric unlock if desired.

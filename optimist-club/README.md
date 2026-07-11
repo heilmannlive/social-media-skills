@@ -1,6 +1,6 @@
-# The Optimist Club
+# The Optimists Club
 
-The digital home of **The Optimist Club** — a private community restoring confidence, agency, and intellectual courage in Germany and Europe. The club convenes entrepreneurs, athletes, executives, and public leaders who prefer building to complaining; this app runs its day-to-day life: events, member administration, internal communication, and membership dues.
+The digital home of **The Optimists Club** — a private community restoring confidence, agency, and intellectual courage in Germany and Europe. The club convenes entrepreneurs, athletes, executives, and public leaders who prefer building to complaining; this app runs its day-to-day life: events, member administration, internal communication, and membership dues.
 
 ## Features
 

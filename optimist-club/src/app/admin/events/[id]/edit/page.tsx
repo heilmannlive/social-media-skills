@@ -6,7 +6,7 @@ import { Button, ButtonLink, Card, PageHeader } from "@/components/ui";
 import { deleteEvent, updateEvent } from "../../actions";
 import { EventForm, type EventFormEcho } from "../../event-form";
 
-export const metadata = { title: "Edit event — Admin — The Optimist Club" };
+export const metadata = { title: "Edit event — Admin — The Optimists Club" };
 
 export default async function EditEventPage({
   params,

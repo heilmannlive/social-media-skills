@@ -1,12 +1,12 @@
 {
-  "name": "The Optimist Club",
-  "short_name": "Optimist Club",
-  "description": "The digital home of The Optimist Club — events, members, announcements, and membership.",
+  "name": "The Optimists Club",
+  "short_name": "Optimists Club",
+  "description": "The digital home of The Optimists Club — events, members, announcements, and membership.",
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#f7f5f0",
-  "theme_color": "#0a1628",
+  "background_color": "#E5E3D3",
+  "theme_color": "#002D57",
   "icons": [
     {
       "src": "/icons/icon-192.png",

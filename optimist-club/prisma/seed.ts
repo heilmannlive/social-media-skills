@@ -26,7 +26,7 @@ async function main() {
       role: "ADMIN",
       status: "ACTIVE",
       title: "Club Director",
-      organization: "The Optimist Club",
+      organization: "The Optimists Club",
       city: "Berlin",
       country: "Germany",
       bio: "Founding director. Building a community of builders, thinkers, and doers for Europe's next chapter.",
@@ -157,7 +157,7 @@ async function main() {
     await db.announcement.create({
       data: {
         title: "Welcome to the member area",
-        body: "This is the digital home of The Optimist Club. Find upcoming salons under Events, meet fellow members in the directory, and keep your profile current — it is how members find each other. Berlin salon RSVPs close Friday.",
+        body: "This is the digital home of The Optimists Club. Find upcoming salons under Events, meet fellow members in the directory, and keep your profile current — it is how members find each other. Berlin salon RSVPs close Friday.",
         audience: "ALL",
         pinned: true,
         authorId: admin.id,

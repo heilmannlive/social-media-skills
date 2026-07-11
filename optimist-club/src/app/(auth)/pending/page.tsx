@@ -12,7 +12,7 @@ export default async function PendingPage() {
 
   return (
     <Card className="w-full max-w-md p-8 text-center">
-      <Sunrise className="mx-auto h-10 w-10 text-gold-500" />
+      <Sunrise className="mx-auto h-10 w-10 text-accent-500" />
       <h1 className="mt-4 font-display text-2xl text-navy-950">Application received</h1>
       <p className="mt-3 text-sm leading-relaxed text-navy-600">
         Thank you, {user.name.split(/\s+/)[0]}. Your application is now with the board, and

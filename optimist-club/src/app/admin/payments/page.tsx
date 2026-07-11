@@ -6,7 +6,7 @@ import { MEMBERSHIP_FEE } from "@/lib/stripe";
 import { Avatar, Badge, Button, Card, EmptyState, PageHeader, StatusBadge } from "@/components/ui";
 import { confirmTransfer, markPaid, resetPayment } from "./actions";
 
-export const metadata = { title: "Payments — The Optimist Club" };
+export const metadata = { title: "Payments — The Optimists Club" };
 
 const NOTICES: Record<string, string> = {
   "marked-paid": "Dues recorded as paid. The member has been notified.",
@@ -29,7 +29,7 @@ const METHOD_LABELS: Record<string, string> = {
   MANUAL: "Manual",
 };
 
-function SummaryChip({ label, value, tone }: { label: string; value: string; tone: "green" | "gold" | "gray" | "navy" }) {
+function SummaryChip({ label, value, tone }: { label: string; value: string; tone: "green" | "accent" | "gray" | "navy" }) {
   return (
     <Card className="flex items-center gap-3 px-4 py-3">
       <Badge tone={tone}>{label}</Badge>
@@ -90,7 +90,7 @@ export default async function AdminPaymentsPage({
       {notice ? (
         <div
           role="status"
-          className="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"
+          className="mb-6 rounded-md border border-accent-200 bg-accent-50 px-4 py-3 text-sm text-accent-800"
         >
           {notice}
         </div>
@@ -122,7 +122,7 @@ export default async function AdminPaymentsPage({
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <SummaryChip label="Paid" value={String(paid.length)} tone="green" />
-        <SummaryChip label="Pending" value={String(pending.length)} tone="gold" />
+        <SummaryChip label="Pending" value={String(pending.length)} tone="accent" />
         <SummaryChip label="Unpaid" value={String(unpaid.length)} tone="gray" />
         <SummaryChip
           label="Collected"
@@ -173,7 +173,7 @@ export default async function AdminPaymentsPage({
                   <td className="px-4 py-3">
                     {payment ? (
                       payment.status === "PENDING" ? (
-                        <Badge tone="gold">PENDING</Badge>
+                        <Badge tone="accent">PENDING</Badge>
                       ) : (
                         <StatusBadge value={payment.status} />
                       )
@@ -194,7 +194,7 @@ export default async function AdminPaymentsPage({
                           <form action={confirmTransfer}>
                             <input type="hidden" name="userId" value={member.id} />
                             <input type="hidden" name="year" value={year} />
-                            <Button type="submit" variant="gold" className="px-3 py-1.5 text-xs">
+                            <Button type="submit" variant="accent" className="px-3 py-1.5 text-xs">
                               Confirm transfer
                             </Button>
                           </form>
