@@ -71,17 +71,23 @@ Format definitions to apply when filling each cell:
 
 Each cell's idea should be a specific headline, not a theme. Good: "The 3-line hook formula I stole from David Ogilvy". Bad: "Hooks".
 
-## Step 3. Output
+## Step 3. Output (surface-aware)
 
-Output the full table in a markdown code block so the user can copy it into Notion.
+Pick the output mode based on the surface you are running on. Do not output the table in a fenced markdown code block — that renders as monospace plain text and makes a 5×8 grid hard to scan.
 
-Below the table, add one sentence naming the single strongest idea across the matrix and why.
+- **Claude.ai or Claude Cowork (chat surfaces with interactive chart support):** render the matrix as an interactive chart / interactive table widget. Pillars as rows, formats as columns, each cell holding one specific headline. The user should be able to click a cell to see the full headline and any expansion notes. Do not also dump the table as markdown — the chart is the deliverable.
+- **Claude Code (file-system surface, has Write/Edit tools):** save the matrix to `content-matrix-YYYY-MM-DD.md` in the current working directory and print the same table inline in the response as a plain markdown table (no triple-backtick wrap). Confirm the file path so the user can open it.
+- **Fallback (no interactive chart, no file-system tools):** output a plain markdown table inline. Still no code-fence wrap.
+
+Below the table or chart, add one sentence naming the single strongest idea across the matrix and why.
 
 ## Step 4. Offer the next move
 
 Ask:
 
-> Any cell here you want me to write as a full post? Call the post-writer or post-formatter skill with the cell reference.
+> Any cell here you want me to write as a full post? Reference the cell by pillar + format (for example "Hooks × Contrarian") and I will hand it to the post-writer or post-formatter skill.
+
+On Claude Code, also offer to append the drafted post into the same `content-matrix-YYYY-MM-DD.md` file under the cell reference.
 
 ## Rules
 
