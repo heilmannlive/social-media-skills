@@ -1,8 +1,0 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  // Keep server-only packages out of the client bundle.
-  serverExternalPackages: ["@prisma/client", "bcryptjs"],
-};
-
-export default nextConfig;

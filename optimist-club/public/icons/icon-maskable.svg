@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="The Optimists Club">
-  <rect width="512" height="512" fill="#002D57"/>
-  <g stroke="#005EFF" stroke-width="30" stroke-linecap="round" stroke-linejoin="round" fill="none" transform="translate(51 51) scale(0.8)">
-    <path d="M150 372V196a76 76 0 0 1 76-76"/>
-    <path d="M226 372V196a76 76 0 0 1 76-76"/>
-    <path d="M302 372V196a76 76 0 0 1 76-76"/>
-  </g>
-</svg>
