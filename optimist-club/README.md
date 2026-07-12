@@ -27,6 +27,8 @@ cd social-media-skills/optimist-club
 
 `cd` means "change directory" — like double-clicking into a folder, but by typing. Every command below runs _inside_ this folder.
 
+> **Already downloaded it earlier and don't see the `optimist-club` folder?** Your copy is on an older version. Update it from inside the `social-media-skills` folder: `git pull origin main`. Then `cd optimist-club`.
+
 **3. Set it up and start it.** Run these **one at a time**, waiting for each to finish:
 
 ```bash
